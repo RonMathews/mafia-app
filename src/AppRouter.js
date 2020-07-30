@@ -47,8 +47,6 @@ function RenderView() {
       sampleDataObject = { ...sampleDataObject, ...currentPlayerDetails };
 
       if (sampleDataObject.gameState === GAME_STATE.STARTED) {
-        // todo kriti
-        // state.connection.invoke("joinGame", name, code-role); 
 
         // WHOM - EVERYONE
         // WHEN - AFTER DAY VOTING
@@ -106,7 +104,15 @@ function RenderView() {
 
     state.connection.on("ReceivedMessage", data => {
       // todo kriti
-      // handleMessageReceived(data);
+      debugger;
+      console.log("message received", data);
+      console.log("state", state);
+      let isMafiaChat = data.roomName.indexOf('Chat_Mafia') !== -1;
+      if (isMafiaChat) {
+        mafiaMessages = mafiaMessages.concat({ ...data.message });
+      } else {
+        villageMessages = villageMessages.concat({ ...data.message });
+      }
     });
   }
 
@@ -132,21 +138,6 @@ function RenderView() {
 
     dispatch({ ...state, mafiaScreen: MAFIA_STATES.LOAD, data: sampleDataObject });
 
-    state['connection'].on("ReceiveMessage", data => {
-      // todo kriti
-      debugger;
-      console.log("message received", data);
-      console.log("state", state);
-      let isMafiaChat = true;
-      if (isMafiaChat) {
-        mafiaMessages = mafiaMessages.concat({ ...data });
-        console.log(mafiaMessages);
-      } else {
-        villageMessages = villageMessages.concat({ ...data });
-        console.log(villageMessages);
-      }
-      // handleChatMessageReceived(data);
-    });
   }
 
   const onLinkAdded = (link) => {
@@ -175,20 +166,17 @@ function RenderView() {
   const sendMessage = (messageObject, role) => {
     // todo kriti
     debugger;
+    let code = '';
     console.log('state', state, role);
     // const [state] = useGlobalState();
     if (role === ROLES.MAFIA) {
-      // this.setState({
-      //   mafiaMessages: state.mafiaMessages.concat(messageObject)
-      // });
+      code = `Chat_Mafia_${state.data.code}`;
       mafiaMessages = mafiaMessages.concat(messageObject);
     } else {
-      // this.setState({
-      //   villageMessage: state.villageMessage.concat(messageObject)
-      // });
+      code = state.data.code;
       villageMessages = villageMessages.concat(messageObject);
     }
-    state.connection.invoke("sendMessage", `${state.data.code}-${ROLES.MAFIA.toString()}`, messageObject);
+    state.connection.invoke("sendMessage", code, messageObject);
     console.log('Message', messageObject, role);
   }
 
