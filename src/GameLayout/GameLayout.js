@@ -32,7 +32,11 @@ function GameLayout(props) {
       <div style={containerStyles()}>
         <PlayersList killVillager={props.killVillager} vote={props.vote} 
         players={props.players} roundState={props.roundState} 
+<<<<<<< HEAD
         isPrimaryMafia={props.isPrimaryMafia} isCurrentPlayerAlive = {!props.currentPlayerDead}/>
+=======
+        isPrimaryMafia={props.isPrimaryMafia} currentPlayerName={props.yourName} isCurrentPlayerAlive = {!props.currentPlayerDead}/>
+>>>>>>> f00f3a30dcdd744171468a5aa4790381f5ca3865
         {props.gameState === GAME_STATE.STARTED
         ? <div style = {getTextStyles()}>
             <p>{text1}</p>
@@ -45,7 +49,9 @@ function GameLayout(props) {
           </div>
         }
         {props.gameState === GAME_STATE.STARTED
-        ? <ChatPane roundState={props.roundState} currentPlayerName={props.yourName} currentPlayerDead={props.currentPlayerDead} currentPlayerRole={props.currentPlayerRole} currentPlayerId={props.currentPlayerId}/>
+        ? <ChatPane roundState={props.roundState} currentPlayerName={props.yourName} currentPlayerDead={props.currentPlayerDead} currentPlayerRole={props.currentPlayerRole} currentPlayerId={props.currentPlayerId}
+        sendMessage={props.sendMessage} villageMessages={props.villageMessages} mafiaMessages={props.mafiaMessages}
+        />
         : <PlayersGrid players={props.winners} />
         }
       </div>

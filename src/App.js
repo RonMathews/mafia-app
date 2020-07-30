@@ -10,26 +10,28 @@ export const MAFIA_STATES = {
 }
 
 export const ROLES = {
-  VILLAGER: 'villager',
-  MAFIA: 'mafia'
+  VILLAGER: 0,
+  MAFIA: 1
 }
 
 export const GAME_STATE = {
-  WAITING: 'Waiting',
-  STARTED: 'Started',
-  COMPLETED_MAFIA: 'Completed-Mafia',
-  COMPLETED_VILLAGER: 'Completed-Villager'
+  WAITING: 0,
+  STARTED: 1,
+  COMPLETED_MAFIA: 2,
+  COMPLETED_VILLAGER: 3
 }
 
 export const ROUND_STATE = {
-  DAY: 'Day',
-  NIGHT: 'Night'
+  DAY: 0,
+  NIGHT: 1
 }
 
 const defaultState = {
   mafiaScreen: MAFIA_STATES.LOAD,
   connection: undefined,
-  data: undefined
+  data: undefined,
+  villageMessages: [],
+  mafiaMessages: []
 }
 
 const GlobalStateContext = React.createContext(defaultState); // to read
@@ -38,7 +40,8 @@ const DispatchStateContext = React.createContext(undefined); // to write
 
 const GlobalStateProvider = ({ children }) => {
   const [state, dispatch] = React.useReducer(
-    (state, newValue) => ({ ...state, ...newValue }),
+    (state, newValue) => {
+      return { ...state, ...newValue } },
     defaultState
   );
   return (
