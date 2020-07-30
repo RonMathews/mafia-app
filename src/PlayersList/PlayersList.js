@@ -1,13 +1,10 @@
 import React, { Component } from "react";
 import { containerStyles, playerRowStyles, imageStyles, playerNameStyles, voteStyles, radioButtonStyles } from "./PlayersListStyles";
 import { ChoiceGroup} from 'office-ui-fabric-react/lib/ChoiceGroup';
-<<<<<<< HEAD
 import { ROLES, ROUND_STATE } from "../App";
-=======
 import 'office-ui-fabric-react/dist/css/fabric.css';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
->>>>>>> ef012aa7a0f9f7a890f7b66fd59e6246917402b8
 class PlayersList extends Component {
 
   constructor(props) {

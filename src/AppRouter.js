@@ -190,7 +190,6 @@ function RenderView() {
                   currentPlayerDead={state['data'].currentPlayerDead}
                   gameState={state['data'].gameState}/>
                 <GameLayout 
-<<<<<<< HEAD
                   currentPlayerRole={state['data'].currentPlayerRole} 
                   currentPlayerId={state['data'].currentPlayerId}
                   roundNumber={state['data'].roundNumber} 
@@ -205,32 +204,6 @@ function RenderView() {
                   vote={vote} 
                   players = {state['data'].members}
                   isPrimaryMafia = {state['data'].isPrimaryMafia}/>
-=======
-                currentPlayerRole={currentPlayerRole} 
-                roundNumber={roundNumber} 
-                currentPlayerDead={currentPlayerDead}
-                gameState={gameState}
-                roundState={roundState}
-                previousKillRole={previousKillRole}
-                primaryMafiaName={primaryMafiaName}
-                yourName={yourName}
-                winners={Winners}
-                killVillager={killVillager} 
-                vote={vote} 
-                players = {
-                  [{name:"Suzie",role:"Mafia",isAlive:true, vote:1, id:1}, 
-                  {name:"Viji",role:"Mafia",isAlive:false, vote:undefined, id:2}, 
-                  {name:"Sharon",role:"Villager",isAlive:false, vote:undefined, id:3},
-                  {name:"Kriti",role:"Villager",isAlive:true, vote:1, id:4},
-                  {name:"Joyeeta",role:"Villager",isAlive:true, vote:2, id:5}, 
-                  {name:"Neeli",role:"Mafia",isAlive:false, vote:undefined, id:6}]
-                  } 
-                roundState = "night" 
-                isPrimaryMafia = {true}
-                currentPlayerName = "Viji" 
-                isCurrentPlayerAlive = {true}
-                />
->>>>>>> ef012aa7a0f9f7a890f7b66fd59e6246917402b8
               </>);
     case MAFIA_STATES.LOAD:
         return (<><HeaderLayout screen={MAFIA_STATES.LOAD}/><FullScreenSpinner /></>);
