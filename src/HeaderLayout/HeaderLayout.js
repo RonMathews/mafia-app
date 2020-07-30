@@ -2,7 +2,7 @@ import React from 'react';
 import {MAFIA_STATES, useGlobalState, ROLES, GAME_STATE} from '../App';
 import { Image } from '@fluentui/react';
 import headerLogo from "../HeaderLogo.png"
-import { containerStyles, getMiddleDivStyles, getRightDivStyles, getConferenceLinkStyles } from "./HeaderLayoutStyles";
+import { containerStyles, getMiddleDivStyles, getRightDivStyles, getConferenceLinkStyles, getWrapperStyles, getLinkStyles } from "./HeaderLayoutStyles";
 
 function HeaderLayout(props) {
   const [state] = useGlobalState();
@@ -16,13 +16,13 @@ function HeaderLayout(props) {
   const color = props.currentPlayerDead ? "#8C8B85" : (props.currentPlayerRole === ROLES.MAFIA ? "#BA797D" : "#EEDFAB");
  
   return (
-    <div>
+    <div style = {getWrapperStyles()}>
       <div style={containerStyles()}>
         <Image width={200} src={headerLogo} />
         { showDiv && <div style={getMiddleDivStyles(color)}><b>{divText}</b></div>}
         { showRound && <div style={getRightDivStyles()}>{roundText}</div>}
       </div>
-      {showLink && props.link && <div style={getConferenceLinkStyles()}>{props.link}</div>}  
+      {showLink && props.link && <div style={getConferenceLinkStyles()}><a href ={props.link} target="_blank" style={getLinkStyles()}>{props.link}</a></div>}  
     </div>
   );
 }
