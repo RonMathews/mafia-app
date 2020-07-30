@@ -12,17 +12,24 @@ export const getMiddleDivStyles = ((props) => ({
 }));
 
 export const getConferenceLinkStyles = (() => ({
-    display: "flex", 
+    display: "inline-block", 
     justifyContent: "center", 
     borderRadius: "2px",  
-    padding: "7px 0px 0px 0px", 
+    padding: "10px", 
     margin: "13px auto", 
-    height: "35px", 
-    width: "493px", 
+    height: "35px",  
+    backgroundColor: "#97B788",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    maxWidth: "600px"
+}));
+
+export const getLinkStyles = (() => ({
+    textDecoration: "none",
     color: "#000000", 
     fontSize: "20px",
-    lineHeight: "29px",
-    backgroundColor: "#97B788"
+    lineHeight: "29px"
 }));
 
 export const getRightDivStyles = (() => ({
@@ -36,4 +43,8 @@ export const containerStyles = (() => ({
     flexDirection: "row", 
     justifyContent: "space-between",
     margin: "10px 22px 0px 0px"
+}));
+
+export const getWrapperStyles = (() => ({
+    textAlign: "center"
 }));
