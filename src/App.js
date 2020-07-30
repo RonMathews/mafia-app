@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import AppConnector from "./AppConnector";
+import AppUnderConstruction from "./AppUnderConstruction";
 
 export const MAFIA_STATES = {
   LOGIN: 'login',
@@ -62,7 +62,7 @@ function App() {
   return (
     <GlobalStateProvider>
       <div className="App">
-        <AppConnector/>
+        <AppUnderConstruction/>
       </div>
     </GlobalStateProvider>
   );
