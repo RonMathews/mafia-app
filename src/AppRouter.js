@@ -18,8 +18,6 @@ function AppRouter() {
 function RenderView() {
   // REALLY BAD WAY TO CODE - JUST DOING THINGS QUICKLY
   const [state, dispatch] = useGlobalState();
-  let mafiaMessages = [];
-  let villageMessages = [];
 
   if (state.connection && state.data) {
     state.connection.on("onGameChanged", data => {
@@ -102,16 +100,14 @@ function RenderView() {
       dispatch({ ...state, mafiaScreen: screen, data: sampleDataObject });
     });
 
-    state.connection.on("ReceivedMessage", data => {
-      // todo kriti
-      debugger;
-      console.log("message received", data);
-      console.log("state", state);
+    state.connection.on("ReceiveMessage", data => {
       let isMafiaChat = data.roomName.indexOf('Chat_Mafia') !== -1;
       if (isMafiaChat) {
-        mafiaMessages = mafiaMessages.concat({ ...data.message });
+        let mafiaMessages = state.mafiaMessages.concat({ ...data.message });
+        dispatch({ ...state, mafiaMessages: mafiaMessages });
       } else {
-        villageMessages = villageMessages.concat({ ...data.message });
+        let villageMessages = state.villageMessages.concat({ ...data.message });
+        dispatch({ ...state, villageMessages: villageMessages });
       }
     });
   }
@@ -164,20 +160,13 @@ function RenderView() {
 
 
   const sendMessage = (messageObject, role) => {
-    // todo kriti
-    debugger;
     let code = '';
-    console.log('state', state, role);
-    // const [state] = useGlobalState();
     if (role === ROLES.MAFIA) {
       code = `Chat_Mafia_${state.data.code}`;
-      mafiaMessages = mafiaMessages.concat(messageObject);
     } else {
       code = state.data.code;
-      villageMessages = villageMessages.concat(messageObject);
     }
     state.connection.invoke("sendMessage", code, messageObject);
-    console.log('Message', messageObject, role);
   }
 
   switch (state.mafiaScreen) {
@@ -219,8 +208,8 @@ function RenderView() {
           players={state['data'].members}
           isPrimaryMafia={state['data'].isPrimaryMafia}
           sendMessage={sendMessage}
-          villageMessages={villageMessages}
-          mafiaMessages={mafiaMessages}
+          villageMessages={state.villageMessages}
+          mafiaMessages={state.mafiaMessages}
         />
       </>);
     case MAFIA_STATES.LOAD:
