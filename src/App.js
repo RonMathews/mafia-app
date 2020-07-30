@@ -22,8 +22,8 @@ export const GAME_STATE = {
 }
 
 export const ROUND_STATE = {
-  DAY: 1,
-  NIGHT: 0
+  DAY: 0,
+  NIGHT: 1
 }
 
 const defaultState = {
