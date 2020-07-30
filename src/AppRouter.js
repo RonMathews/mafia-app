@@ -185,31 +185,6 @@ function RenderView() {
       </>);
     case MAFIA_STATES.GAME:
       return (<>
-<<<<<<< HEAD
-                <HeaderLayout 
-                  screen={MAFIA_STATES.GAME} 
-                  link={state['data'].conferenceLink} 
-                  currentPlayerRole={state['data'].currentPlayerRole} 
-                  roundNumber={state['data'].roundNumber} 
-                  currentPlayerDead={state['data'].currentPlayerDead}
-                  gameState={state['data'].gameState}/>
-                <GameLayout 
-                  currentPlayerRole={state['data'].currentPlayerRole} 
-                  currentPlayerId={state['data'].currentPlayerId}
-                  roundNumber={state['data'].roundNumber} 
-                  currentPlayerDead={state['data'].currentPlayerDead}
-                  gameState={state['data'].gameState}
-                  roundState={state['data'].roundState}
-                  previousKillRole={state['data'].previousKillRole}
-                  primaryMafiaName={state['data'].primaryMafiaName}
-                  yourName={state['data'].currentPlayerName}
-                  winners={state['data'].winners}
-                  killVillager={killVillager} 
-                  vote={vote} 
-                  players = {state['data'].members}
-                  isPrimaryMafia = {state['data'].isPrimaryMafia}/>
-              </>);
-=======
         <HeaderLayout
           screen={MAFIA_STATES.GAME}
           link={state['data'].conferenceLink}
@@ -237,7 +212,6 @@ function RenderView() {
           mafiaMessages={state.mafiaMessages}
         />
       </>);
->>>>>>> f00f3a30dcdd744171468a5aa4790381f5ca3865
     case MAFIA_STATES.LOAD:
       return (<><HeaderLayout screen={MAFIA_STATES.LOAD} /><FullScreenSpinner /></>);
     default:
