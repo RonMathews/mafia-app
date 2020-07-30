@@ -188,7 +188,7 @@ function RenderView() {
       // });
       villageMessages = villageMessages.concat(messageObject);
     }
-    state.connection.invoke("sendMessage", `${state.data.code}-${ROLES.MAFIA}`, messageObject);
+    state.connection.invoke("sendMessage", `${state.data.code}-${ROLES.MAFIA.toString()}`, messageObject);
     console.log('Message', messageObject, role);
   }
 
