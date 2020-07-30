@@ -1,5 +1,5 @@
 import React from 'react';
-import {MAFIA_STATES, ROLES, useGlobalState, GAME_STATE, ROUND_STATE} from './App';
+import { MAFIA_STATES, ROLES, useGlobalState, GAME_STATE, ROUND_STATE } from './App';
 import LoginLayout from "./LoginLayout/LoginLayout";
 import LobbyLayout from "./LobbyLayout/LobbyLayout";
 import GameLayout from "./GameLayout/GameLayout";
@@ -9,19 +9,21 @@ import FullScreenSpinner from "./FullScreenSpinner/FullScreenSpinner";
 
 function AppRouter() {
   return (
-      <div style={{display: "flex", flexDirection: "column"}}>
-        {RenderView()}
-      </div>
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      {RenderView()}
+    </div>
   );
 }
 
 function RenderView() {
   // REALLY BAD WAY TO CODE - JUST DOING THINGS QUICKLY
   const [state, dispatch] = useGlobalState();
+  let mafiaMessages = [];
+  let villageMessages = [];
 
   if (state.connection && state.data) {
     state.connection.on("onGameChanged", data => {
-      let oldMembersObject = state.data ? state.data.members : [] ;
+      let oldMembersObject = state.data ? state.data.members : [];
       let roundInformation = data.round;
       let members = data.members;
       let gameState = data.gameState;
@@ -32,7 +34,7 @@ function RenderView() {
         gameState,
         isPlayerOrganizer: state.data.isPlayerOrganizer,
         currentPlayerName: state.data.currentPlayerName,
-        code, 
+        code,
         conferenceLink
       }
 
@@ -42,17 +44,15 @@ function RenderView() {
       let screen = figureWhichScreen(sampleDataObject.gameState);
       // figure current player name, role, status
       let currentPlayerDetails = figureCurrentPlayerDetails(members, sampleDataObject.currentPlayerName);
-      sampleDataObject = {...sampleDataObject, ...currentPlayerDetails};
+      sampleDataObject = { ...sampleDataObject, ...currentPlayerDetails };
 
-      if (sampleDataObject.gameState === GAME_STATE.STARTED) {   
-        // todo kriti
-        // state.connection.invoke("joinGame", name, code-role); 
-        
+      if (sampleDataObject.gameState === GAME_STATE.STARTED) {
+
         // WHOM - EVERYONE
         // WHEN - AFTER DAY VOTING
         // figure previous kill role
         if (roundInformation.round !== 1 && roundInformation.state === ROUND_STATE.NIGHT) {
-          sampleDataObject = {...sampleDataObject, previousKillRole: figurePreviousKillRole(members, oldMembersObject)};
+          sampleDataObject = { ...sampleDataObject, previousKillRole: figurePreviousKillRole(members, oldMembersObject) };
         }
 
         // WHOM - MAFIA
@@ -61,7 +61,7 @@ function RenderView() {
           // figure primary mafia details
           let primaryMafiaName = figurePrimaryMafia(members);
           let isPrimaryMafia = primaryMafiaName === sampleDataObject.currentPlayerName;
-          sampleDataObject = {...sampleDataObject, isPrimaryMafia, primaryMafiaName};
+          sampleDataObject = { ...sampleDataObject, isPrimaryMafia, primaryMafiaName };
         }
 
         // WHOM - EVERYONE
@@ -77,21 +77,21 @@ function RenderView() {
           roundState: roundInformation.state,
         }
       } else if (sampleDataObject.gameState === GAME_STATE.COMPLETED_MAFIA) {
-          // WHOM - EVERYONE
-          // WHEN - GAME OVER
-          sampleDataObject = {
-            ...sampleDataObject,
-            winners: getAllByRole(members, ROLES.MAFIA),
-            members
-          }
+        // WHOM - EVERYONE
+        // WHEN - GAME OVER
+        sampleDataObject = {
+          ...sampleDataObject,
+          winners: getAllByRole(members, ROLES.MAFIA),
+          members
+        }
       } else if (sampleDataObject.gameState === GAME_STATE.COMPLETED_VILLAGER) {
-          // WHOM - EVERYONE
-          // WHEN - GAME OVER
-          sampleDataObject = {
-            ...sampleDataObject,
-            winners: getAllByRole(members, ROLES.VILLAGER),
-            members
-          }
+        // WHOM - EVERYONE
+        // WHEN - GAME OVER
+        sampleDataObject = {
+          ...sampleDataObject,
+          winners: getAllByRole(members, ROLES.VILLAGER),
+          members
+        }
       } else {
         sampleDataObject = {
           ...sampleDataObject,
@@ -99,26 +99,34 @@ function RenderView() {
         }
       }
 
-      dispatch({...state, mafiaScreen: screen, data: sampleDataObject});
+      dispatch({ ...state, mafiaScreen: screen, data: sampleDataObject });
     });
 
     state.connection.on("ReceivedMessage", data => {
       // todo kriti
-      // handleMessageReceived(data);
+      debugger;
+      console.log("message received", data);
+      console.log("state", state);
+      let isMafiaChat = data.roomName.indexOf('Chat_Mafia') !== -1;
+      if (isMafiaChat) {
+        mafiaMessages = mafiaMessages.concat({ ...data.message });
+      } else {
+        villageMessages = villageMessages.concat({ ...data.message });
+      }
     });
   }
 
   const onGameCreate = (name) => {
     state.connection.invoke("createGame", name);
-    
+
     let sampleDataObject = {
       isPlayerOrganizer: true, // set off
       currentPlayerName: name
     };
-    dispatch({...state, mafiaScreen: MAFIA_STATES.LOAD, data: sampleDataObject});
-    
+    dispatch({ ...state, mafiaScreen: MAFIA_STATES.LOAD, data: sampleDataObject });
+
   }
-  
+
   const onGameFetch = (name, code) => {
     state.connection.invoke("joinGame", name, code);
 
@@ -128,10 +136,10 @@ function RenderView() {
       isPlayerOrganizer: false, // set off
     }
 
-    dispatch({...state, mafiaScreen: MAFIA_STATES.LOAD, data: sampleDataObject});
+    dispatch({ ...state, mafiaScreen: MAFIA_STATES.LOAD, data: sampleDataObject });
+
   }
 
-  
   const onLinkAdded = (link) => {
     console.log("Link added being called");
     state.connection.invoke("addLink", state.data.code, link.target.value);
@@ -141,65 +149,82 @@ function RenderView() {
     console.log("Game started");
     state.connection.invoke("startGame", state.data.code);
   }
-  
+
   const killVillager = (userId) => {
     var nameOfVillagerToBeKilled = figureNameById(state.data['members'], userId);
     console.log("Villager killed: " + nameOfVillagerToBeKilled);
     state.connection.invoke("killVillager", state.data.code, state.data.currentPlayerName, nameOfVillagerToBeKilled);
   }
-  
+
   const vote = (userId) => {
     var nameOfVotedVillager = figureNameById(state.data['members'], userId);
     console.log("Voted against villager: " + nameOfVotedVillager);
     state.connection.invoke("voteVillager", state.data.code, state.data.currentPlayerName, state.data.roundNumber, nameOfVotedVillager);
   }
 
-  const sendMessage = (message) => {
+
+  const sendMessage = (messageObject, role) => {
     // todo kriti
-    // state['mafia-connection'].invoke("sendMessage", code-role, message);
+    debugger;
+    let code = '';
+    console.log('state', state, role);
+    // const [state] = useGlobalState();
+    if (role === ROLES.MAFIA) {
+      code = `Chat_Mafia_${state.data.code}`;
+      mafiaMessages = mafiaMessages.concat(messageObject);
+    } else {
+      code = state.data.code;
+      villageMessages = villageMessages.concat(messageObject);
+    }
+    state.connection.invoke("sendMessage", code, messageObject);
+    console.log('Message', messageObject, role);
   }
 
   switch (state.mafiaScreen) {
     case MAFIA_STATES.LOGIN:
-      return (<><HeaderLayout screen={MAFIA_STATES.LOGIN}/><LoginLayout onGameCreate={onGameCreate} onGameFetch={onGameFetch}/></>);
+      return (<><HeaderLayout screen={MAFIA_STATES.LOGIN} /><LoginLayout onGameCreate={onGameCreate} onGameFetch={onGameFetch} /></>);
     case MAFIA_STATES.LOBBY:
       return (<>
-                <HeaderLayout screen={MAFIA_STATES.LOBBY}/>
-                <LobbyLayout 
-                  profiles={state['data'].members} 
-                  link={state['data'].conferenceLink} 
-                  onGameStart={onGameStart} 
-                  onLinkAdded={onLinkAdded}
-                  gameCode={state['data'].code}
-                  isOrganizer={state['data'].isPlayerOrganizer}/>
-              </>);
+        <HeaderLayout screen={MAFIA_STATES.LOBBY} />
+        <LobbyLayout
+          profiles={state['data'].members}
+          link={state['data'].conferenceLink}
+          onGameStart={onGameStart}
+          onLinkAdded={onLinkAdded}
+          gameCode={state['data'].code}
+          isOrganizer={state['data'].isPlayerOrganizer} />
+      </>);
     case MAFIA_STATES.GAME:
       return (<>
-                <HeaderLayout 
-                  screen={MAFIA_STATES.GAME} 
-                  link={state['data'].conferenceLink} 
-                  currentPlayerRole={state['data'].currentPlayerRole} 
-                  roundNumber={state['data'].roundNumber} 
-                  currentPlayerDead={state['data'].currentPlayerDead}
-                  gameState={state['data'].gameState}/>
-                <GameLayout 
-                  currentPlayerRole={state['data'].currentPlayerRole} 
-                  currentPlayerId={state['data'].currentPlayerId}
-                  roundNumber={state['data'].roundNumber} 
-                  currentPlayerDead={state['data'].currentPlayerDead}
-                  gameState={state['data'].gameState}
-                  roundState={state['data'].roundState}
-                  previousKillRole={state['data'].previousKillRole}
-                  primaryMafiaName={state['data'].primaryMafiaName}
-                  yourName={state['data'].currentPlayerName}
-                  winners={state['data'].winners}
-                  killVillager={killVillager} 
-                  vote={vote} 
-                  players = {state['data'].members}
-                  isPrimaryMafia = {state['data'].isPrimaryMafia}/>
-              </>);
+        <HeaderLayout
+          screen={MAFIA_STATES.GAME}
+          link={state['data'].conferenceLink}
+          currentPlayerRole={state['data'].currentPlayerRole}
+          roundNumber={state['data'].roundNumber}
+          currentPlayerDead={state['data'].currentPlayerDead}
+          gameState={state['data'].gameState} />
+        <GameLayout
+          currentPlayerRole={state['data'].currentPlayerRole}
+          currentPlayerId={state['data'].currentPlayerId}
+          roundNumber={state['data'].roundNumber}
+          currentPlayerDead={state['data'].currentPlayerDead}
+          gameState={state['data'].gameState}
+          roundState={state['data'].roundState}
+          previousKillRole={state['data'].previousKillRole}
+          primaryMafiaName={state['data'].primaryMafiaName}
+          yourName={state['data'].currentPlayerName}
+          winners={state['data'].winners}
+          killVillager={killVillager}
+          vote={vote}
+          players={state['data'].members}
+          isPrimaryMafia={state['data'].isPrimaryMafia}
+          sendMessage={sendMessage}
+          villageMessages={villageMessages}
+          mafiaMessages={mafiaMessages}
+        />
+      </>);
     case MAFIA_STATES.LOAD:
-        return (<><HeaderLayout screen={MAFIA_STATES.LOAD}/><FullScreenSpinner /></>);
+      return (<><HeaderLayout screen={MAFIA_STATES.LOAD} /><FullScreenSpinner /></>);
     default:
       return <div>tbd</div>;
   }
@@ -242,16 +267,16 @@ function figurePreviousKillRole(newMembersList, oldMembersList) {
 }
 
 function figurePrimaryMafia(members) {
-  var primaryMafia = members.find(function(member) {
-    if(member.isPrimaryMafia)
+  var primaryMafia = members.find(function (member) {
+    if (member.isPrimaryMafia)
       return true;
   });
   return primaryMafia.name;
 }
 
 function figureCurrentPlayerDetails(members, nameToFind) {
-  var currentPlayer = members.find(function(member) {
-    if(member.name === nameToFind)
+  var currentPlayer = members.find(function (member) {
+    if (member.name === nameToFind)
       return true;
   });
   return {
@@ -264,8 +289,8 @@ function figureCurrentPlayerDetails(members, nameToFind) {
 }
 
 function figureNameById(members, idToFind) {
-  var player = members.find(function(member) {
-    if(member.id === idToFind)
+  var player = members.find(function (member) {
+    if (member.id === idToFind)
       return true;
   });
   return player.name;
@@ -273,7 +298,7 @@ function figureNameById(members, idToFind) {
 
 function figureWhichScreen(state) {
   let screen = MAFIA_STATES.LOBBY;
-  switch(state) {
+  switch (state) {
     case GAME_STATE.WAITING:
       screen = MAFIA_STATES.LOBBY;
       break;
