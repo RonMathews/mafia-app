@@ -145,13 +145,13 @@ function RenderView() {
   const killVillager = (userId) => {
     var nameOfVillagerToBeKilled = figureNameById(state.data['members'], userId);
     console.log("Villager killed: " + nameOfVillagerToBeKilled);
-    // state.connection.invoke("killVillager", state.code, state.currentPlayerName, nameOfVillagerToBeKilled);
+    state.connection.invoke("killVillager", state.data.code, state.data.currentPlayerName, nameOfVillagerToBeKilled);
   }
   
   const vote = (userId) => {
     var nameOfVotedVillager = figureNameById(state.data['members'], userId);
     console.log("Voted against villager: " + nameOfVotedVillager);
-    // state.connection.invoke("killVillager", state.code, state.currentPlayerName, state.roundNumber, nameOfVotedVillager);
+    state.connection.invoke("voteVillager", state.data.code, state.data.currentPlayerName, state.data.roundNumber, nameOfVotedVillager);
   }
 
   const sendMessage = (message) => {
