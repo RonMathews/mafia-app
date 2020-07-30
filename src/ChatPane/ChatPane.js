@@ -6,63 +6,6 @@ class ChatPane extends React.Component {
   imageBaseUrl = 'https://api.adorable.io/avatars/285/';
   imageEndUrl = '@adorable.png';
 
-  state = {
-    mafiaMessages: [
-      {
-        author: {
-          username: 'User1',
-          id: 1,
-          avatarUrl: 'https://api.adorable.io/avatars/285/User1@adorable.png',
-        },
-        text: 'Hi, I am Mafia 1.',
-        type: 'text',
-        timestamp: 1578366393250,
-      },
-      {
-        author: {
-          username: 'User2',
-          id: 2,
-          avatarUrl: 'https://api.adorable.io/avatars/285/User2@adorable.png',
-        },
-        text: 'who should we kill.',
-        type: 'text',
-        timestamp: 1578366393250,
-      },
-    ],    // populate this from backend
-    villageMessages: [
-      {
-        author: {
-          username: 'User1',
-          id: 1,
-          avatarUrl: 'https://api.adorable.io/avatars/285/user1@adorable.png',
-        },
-        text: 'Hi, I am Villager 1.',
-        type: 'text',
-        timestamp: 1578366393250,
-      },
-      {
-        author: {
-          username: 'User2',
-          id: 2,
-          avatarUrl: 'https://api.adorable.io/avatars/285/user2@adorable.png',
-        },
-        text: 'i am a cop',
-        type: 'text',
-        timestamp: 1578366393250,
-      },
-      {
-        author: {
-          username: 'User3',
-          id: 3,
-          avatarUrl: 'https://api.adorable.io/avatars/285/user3@adorable.png',
-        },
-        text: 'i am a doctor',
-        type: 'text',
-        timestamp: 1578366393250,
-      },
-    ],      // populate this from backend
-  };
-
   // Function to send message in mafia group chat
   handleOnSendMessageInMafiaChat = (message) => {
     const avatarUrl = `${this.imageBaseUrl}${this.props.currentPlayerName}${this.imageEndUrl}`;
@@ -77,9 +20,6 @@ class ChatPane extends React.Component {
       type: 'text'
     };
     this.props.sendMessage(mafiaMessage, ROLES.MAFIA);
-    // this.setState({
-    //   mafiaMessages: this.state.mafiaMessages.concat(mafiaMessage)
-    // });
   }
 
   // Function to send message in village group chat
@@ -96,12 +36,10 @@ class ChatPane extends React.Component {
       type: 'text'
     };
     this.props.sendMessage(villageMessage, ROLES.VILLAGER);
-    // this.setState({
-    //   villageMessages: this.state.villageMessages.concat(villageMessage)  
-    // });
   }
   render() {
     const showMafiaChat = (this.props.currentPlayerRole === ROLES.MAFIA && this.props.roundState ===  ROUND_STATE.NIGHT);
+
     return (
       <div style={containerStyles()}>
         {/* // Mafia Chat Box */}
@@ -126,7 +64,7 @@ class ChatPane extends React.Component {
             width={'100vw'}
             height={'70vh'}
             placeholder="Village Group Chat"
-            disableInput={this.props.roundState ===  ROUND_STATE.NIGHT || (!this.props.currentPlayerDead)}
+            disableInput={this.props.roundState ===  ROUND_STATE.NIGHT || (this.props.currentPlayerDead)}
           />
         </div>
       </div>
