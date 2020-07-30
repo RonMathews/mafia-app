@@ -8,7 +8,7 @@ import { ROLES, GAME_STATE, ROUND_STATE } from '../App';
 function GameLayout(props) {
  
   const text1 = props.roundState === ROUND_STATE.NIGHT 
-  ? (props.roundNumber !== 1 && `You eliminated a ${props.previousKillRole}!`)  
+  ? (props.roundNumber !== 1 && `You eliminated a ${props.previousKillRole === ROLES.MAFIA ? "Mafia" : "Villager"}!`)  
   : "Mafia killed a Villager!";
   
   const text2 = props.currentPlayerDead 

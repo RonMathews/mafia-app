@@ -49,7 +49,7 @@ function RenderView() {
         // WHOM - EVERYONE
         // WHEN - AFTER DAY VOTING
         // figure previous kill role
-        if (roundInformation.round !== 1 && roundInformation.state === ROUND_STATE.NIGHT) {
+        if (roundInformation.round !== 1 && roundInformation.state === ROUND_STATE.NIGHT && state.data.members && members) {
           sampleDataObject = { ...sampleDataObject, previousKillRole: figurePreviousKillRole(members, oldMembersObject) };
         }
 
