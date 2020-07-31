@@ -19,7 +19,7 @@ function GameLayout(props) {
           : ((props.primaryMafiaName===props.yourName) 
               ? "You are the primary mafia"
               : `${props.primaryMafiaName} is the primary mafia`))
-      :  "Discuss and vote to eliminate someone from the city");
+      :  "Discuss and vote to unanimously eliminate someone from the city");
 
   const text3 = props.currentPlayerRole === ROLES.MAFIA && props.roundState === ROUND_STATE.NIGHT && !props.currentPlayerDead && (props.primaryMafiaName===props.yourName ? "Discuss with your teammates and choose a villager to kill" 
   : "Discuss with your fellow mafia and help the primary mafia choose a villager to kill");

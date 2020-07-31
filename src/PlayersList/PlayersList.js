@@ -75,6 +75,9 @@ class PlayersList extends Component {
     }  else if (this.props.roundState == ROUND_STATE.NIGHT && this.props.isPrimaryMafia) {
       this.showButtonForGeneralVoting = false;
       this.showButtonForMafiaVoting = true;
+    } else {
+      this.showButtonForGeneralVoting = false;
+      this.showButtonForMafiaVoting = false;
     }
     
     const options = this.getPlayerRows(this.showButtonForGeneralVoting, this.showButtonForMafiaVoting);
