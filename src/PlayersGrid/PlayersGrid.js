@@ -14,7 +14,7 @@ function PlayersGrid(props) {
   return (
     <PerfectScrollbar style = {containerStyles(width)}>
           <div style = {getTextStyles()}>{headerText}</div>
-          {(props.players.length<7) && !gameScreen && <div style={enoughPlayersTextStyles()}> Need at least 7 players to play!</div>}
+          {(props.players.length<7) && !gameScreen && <div style={enoughPlayersTextStyles()}> Best to play with at least 7 people!</div>}
           <div style={playerContainerStyles(gridStyle)}>{props.players.map(profile => <Player key={profile.id} {...profile} />)}</div>
     </PerfectScrollbar>
     
