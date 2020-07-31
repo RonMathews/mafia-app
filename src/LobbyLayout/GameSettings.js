@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, TextField } from '@fluentui/react';
-import { containerStyles, invitationCodeTextStyles, invitationCodeStyles, getTextStyles, getButtonStyles, waitingMsgTextStyles, conferenceLinkTextStyles, conferenceLinkStyles} from "./GameSettingsStyles";
+import { containerStyles, invitationCodeTextStyles, invitationCodeStyles, getTextStyles, getButtonStyles, waitingMsgTextStyles, conferenceLinkTextStyles, conferenceLinkStyles, getLinkStyles} from "./GameSettingsStyles";
 
 function GameSettings(props) {
   const enoughPlayers = true; // props.noOfPlayers > 6; // todo read this from some global state post roster syncing
@@ -18,7 +18,7 @@ function GameSettings(props) {
                {props.link 
                   &&<div>
                       <div style={conferenceLinkTextStyles()}>Conference Link</div>
-                      <div style={conferenceLinkStyles()}>{props.link}</div>
+                      <div style={conferenceLinkStyles()}><a href = {props.link} target="_blank" style = {getLinkStyles()}>{props.link}</a></div>
                     </div>
                 }
               <div style={waitingMsgTextStyles(topMargin)}>Waiting for your organizer to start the game!</div>
