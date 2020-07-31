@@ -22,14 +22,14 @@ export const getConferenceLinkStyles = (() => ({
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    maxWidth: "600px"
+    maxWidth: "600px",
+    color: "#000000"
 }));
 
 export const getLinkStyles = (() => ({
-    textDecoration: "none",
-    color: "#000000", 
+    textDecoration: "none", 
     fontSize: "20px",
-    lineHeight: "29px"
+    color: "#000"
 }));
 
 export const getRightDivStyles = (() => ({

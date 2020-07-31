@@ -70,14 +70,22 @@ export const invitationCodeStyles = (() => ({
 export const conferenceLinkStyles = (() => ({
   borderRadius: "2px",
   margin: "0px 0px 0px 68px", 
-  fontSize: "22px",
   height: "50px",
-  width: "510px",
-  color: "#000",
+  maxWidth: "510px",
   backgroundColor: "#97B788",
   textAlign: "center",
+  padding: "20px 10px 0px 10px",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+  color: "#000"
+}));
+
+export const getLinkStyles = (() => ({
+  textDecoration: "none",
   fontFamily: "Helvetica Neue", 
-  padding: "20px 0px 0px 0px"
+  color: "#000", 
+  fontSize: "22px"
 }));
 
 export const waitingMsgTextStyles = ((props) => ({
