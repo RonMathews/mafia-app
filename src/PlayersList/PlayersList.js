@@ -71,7 +71,9 @@ class PlayersList extends Component {
   render() {
     if (this.props.roundState == ROUND_STATE.DAY && this.props.isCurrentPlayerAlive) {
       this.showButtonForGeneralVoting = true;
+      this.showButtonForMafiaVoting = false;
     }  else if (this.props.roundState == ROUND_STATE.NIGHT && this.props.isPrimaryMafia) {
+      this.showButtonForGeneralVoting = false;
       this.showButtonForMafiaVoting = true;
     }
     
