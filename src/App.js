@@ -6,7 +6,8 @@ export const MAFIA_STATES = {
   LOGIN: 'login',
   LOBBY: 'lobby',
   GAME: 'game',
-  LOAD: 'load'
+  LOAD: 'load',
+  ERROR: 'error'
 }
 
 export const ROLES = {

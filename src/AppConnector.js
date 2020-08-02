@@ -15,7 +15,7 @@ function AppConnector() {
           .then(() => {
             dispatch({...state, mafiaScreen: MAFIA_STATES.LOGIN, connection: connection})
           })
-          .catch((error) => { console.log(error)} )
+          .catch(() => {dispatch({...state, mafiaScreen: MAFIA_STATES.ERROR})} )
         
     } catch(error) {
       console.log(error);

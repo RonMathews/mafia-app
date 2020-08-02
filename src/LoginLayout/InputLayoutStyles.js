@@ -26,7 +26,7 @@ export const getNameTextStyles = (() => ({
     label: {
       root: {
         color: '#EOEOEO',
-        margin: '0px 13px 30px 36px'
+        margin: '0px 13px 30px 4px'
       }
     }
   }

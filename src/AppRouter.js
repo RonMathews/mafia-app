@@ -5,6 +5,7 @@ import LobbyLayout from "./LobbyLayout/LobbyLayout";
 import GameLayout from "./GameLayout/GameLayout";
 import HeaderLayout from "./HeaderLayout/HeaderLayout";
 import FullScreenSpinner from "./FullScreenSpinner/FullScreenSpinner";
+import ErrorScreen from "./ErrorScreen/ErrorScreen";
 
 
 function AppRouter() {
@@ -113,7 +114,8 @@ function RenderView() {
   }
 
   const onGameCreate = (name) => {
-    state.connection.invoke("createGame", name);
+    state.connection.invoke("createGame", name)
+      .catch(() => dispatch({ mafiaScreen: MAFIA_STATES.ERROR}));
 
     let sampleDataObject = {
       isPlayerOrganizer: true, // set off
@@ -124,7 +126,8 @@ function RenderView() {
   }
 
   const onGameFetch = (name, code) => {
-    state.connection.invoke("joinGame", name, code);
+    state.connection.invoke("joinGame", name, code)
+      .catch(() => dispatch({ mafiaScreen: MAFIA_STATES.ERROR}));
 
     let sampleDataObject = {
       code: code, // set  off
@@ -138,24 +141,28 @@ function RenderView() {
 
   const onLinkAdded = (link) => {
     console.log("Link added being called");
-    state.connection.invoke("addLink", state.data.code, link.target.value);
+    state.connection.invoke("addLink", state.data.code, link.target.value)
+      .catch(() => dispatch({ mafiaScreen: MAFIA_STATES.ERROR}));
   }
 
   const onGameStart = () => {
     console.log("Game started");
-    state.connection.invoke("startGame", state.data.code);
+    state.connection.invoke("startGame", state.data.code)
+      .catch(() => dispatch({ mafiaScreen: MAFIA_STATES.ERROR}));
   }
 
   const killVillager = (userId) => {
     var nameOfVillagerToBeKilled = figureNameById(state.data['members'], userId);
     console.log("Villager killed: " + nameOfVillagerToBeKilled);
-    state.connection.invoke("killVillager", state.data.code, state.data.currentPlayerName, nameOfVillagerToBeKilled);
+    state.connection.invoke("killVillager", state.data.code, state.data.currentPlayerName, nameOfVillagerToBeKilled)
+      .catch(() => dispatch({ mafiaScreen: MAFIA_STATES.ERROR}));
   }
 
   const vote = (userId) => {
     var nameOfVotedVillager = figureNameById(state.data['members'], userId);
     console.log("Voted against villager: " + nameOfVotedVillager);
-    state.connection.invoke("voteVillager", state.data.code, state.data.currentPlayerName, state.data.roundNumber, nameOfVotedVillager);
+    state.connection.invoke("voteVillager", state.data.code, state.data.currentPlayerName, state.data.roundNumber, nameOfVotedVillager)
+      .catch(() => dispatch({ mafiaScreen: MAFIA_STATES.ERROR}));
   }
 
 
@@ -166,7 +173,8 @@ function RenderView() {
     } else {
       code = state.data.code;
     }
-    state.connection.invoke("sendMessage", code, messageObject);
+    state.connection.invoke("sendMessage", code, messageObject)
+      .catch(() => dispatch({ mafiaScreen: MAFIA_STATES.ERROR}));
   }
 
   switch (state.mafiaScreen) {
@@ -215,7 +223,7 @@ function RenderView() {
     case MAFIA_STATES.LOAD:
       return (<><HeaderLayout screen={MAFIA_STATES.LOAD} /><FullScreenSpinner /></>);
     default:
-      return <div>tbd</div>;
+      return (<><HeaderLayout screen={MAFIA_STATES.LOAD} /><ErrorScreen /></>);
   }
 }
 
