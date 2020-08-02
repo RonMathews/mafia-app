@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button } from '@fluentui/react';
 import { containerStyles, getNameTextStyles, getCodeTextStyles, getButtonStyles } from "./InputLayoutStyles";
 
-  function InputLayout(props) {
+function InputLayout(props) {
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
   let timeout = 0;
