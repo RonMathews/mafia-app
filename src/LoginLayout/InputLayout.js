@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { TextField, Button } from '@fluentui/react';
 import { containerStyles, getNameTextStyles, getCodeTextStyles, getButtonStyles } from "./InputLayoutStyles";
 
-function InputLayout(props) {
+  function InputLayout(props) {
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
+  let timeout = 0;
 
   function handleCreate () {
     props.onGameCreate(name);
@@ -14,10 +15,16 @@ function InputLayout(props) {
     props.onGameFetch(name, code);
   }
 
+  function handleKeyUp(data, fun) {
+    const val  = data.target.value
+    if(timeout) clearTimeout(timeout); 
+    timeout = setTimeout(fun(val), 500)
+  }
+ 
   return (
       <div style={containerStyles()}>
-        <TextField label="Name" styles={getNameTextStyles()} placeholder="Enter text here" onBlur={(data) => setName(data.target.value)} />
-        <TextField label="Game Code" styles={getCodeTextStyles()} placeholder="Enter code here" onBlur={(data) => setCode(data.target.value)}/>
+        <TextField label="Name" styles={getNameTextStyles()} placeholder="Enter text here" onKeyUp={(data) => {handleKeyUp(data, (val) => setName(val))}} />
+        <TextField label="Game Code" styles={getCodeTextStyles()} placeholder="Enter code here" onKeyUp={(data) => {handleKeyUp(data, (val) => setCode(val))}}/>
         <Button disabled={name === ""} text={code ? "Join Room" : "Create Room"} styles={getButtonStyles()}  onClick={code ? handleJoin : handleCreate}/>
       </div>
   );
