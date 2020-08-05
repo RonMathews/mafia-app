@@ -23,8 +23,8 @@ function InputLayout(props) {
  
   return (
       <div style={containerStyles()}>
-        <TextField label="User Name" styles={getNameTextStyles()} placeholder="Enter text here" onKeyUp={(data) => {handleKeyUp(data, (val) => setName(val))}} />
-        <TextField label="Game Code" styles={getCodeTextStyles()} placeholder="Enter code here" onKeyUp={(data) => {handleKeyUp(data, (val) => setCode(val))}}/>
+        <TextField label="User Name" styles={getNameTextStyles()} placeholder="Your unique username" onKeyUp={(data) => {handleKeyUp(data, (val) => setName(val))}} />
+        <TextField label="Game Code" styles={getCodeTextStyles()} placeholder="Join existing room (Optional)" onKeyUp={(data) => {handleKeyUp(data, (val) => setCode(val))}}/>
         <Button disabled={name === ""} text={code ? "Join Room" : "Create Room"} styles={getButtonStyles()}  onClick={code ? handleJoin : handleCreate}/>
       </div>
   );
