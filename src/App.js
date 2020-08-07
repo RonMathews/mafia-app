@@ -42,7 +42,6 @@ const DispatchStateContext = React.createContext(undefined); // to write
 const GlobalStateProvider = ({ children }) => {
   const [state, dispatch] = React.useReducer(
     (state, newValue) => {
-      console.log("Global State: ", state, newValue);
       return { ...state, ...newValue } },
     defaultState
   );
